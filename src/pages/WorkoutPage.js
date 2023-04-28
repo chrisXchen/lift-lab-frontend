@@ -33,21 +33,6 @@ const WorkoutPage = () => {
   const [loading, setLoading] = useState(true);
   const userId = Cookies.get('userId');
 
-  const fetchData = async () => {
-    try {
-      const workoutResponse = await axios.get(`/api/filter-recorded-workouts?userId=${userId}&workoutSlug=${workoutslug}`);
-      console.log('Fetched workout data:', workoutResponse.data);
-      setWorkoutData(workoutResponse.data);
-      const genWorkoutResponse = await axios.get(`/api/slug-search-all-workouts?search=${workoutslug}`);
-      console.log("Grabbed workout data from slug:", genWorkoutResponse.data);
-      setGenWorkoutData(genWorkoutResponse.data);
-    } catch (error) {
-      console.error('Error fetching workout data:', error.response.data);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const hasWorkoutData = () => {
     for (const date in workoutData) {
       if (Object.keys(workoutData[date]).length > 0) {
@@ -58,6 +43,20 @@ const WorkoutPage = () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const workoutResponse = await axios.get(`/api/filter-recorded-workouts?userId=${userId}&workoutSlug=${workoutslug}`);
+        console.log('Fetched workout data:', workoutResponse.data);
+        setWorkoutData(workoutResponse.data);
+        const genWorkoutResponse = await axios.get(`/api/slug-search-all-workouts?search=${workoutslug}`);
+        console.log("Grabbed workout data from slug:", genWorkoutResponse.data);
+        setGenWorkoutData(genWorkoutResponse.data);
+      } catch (error) {
+        console.error('Error fetching workout data:', error.response.data);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchData();
   }, [userId, workoutslug]);
 
