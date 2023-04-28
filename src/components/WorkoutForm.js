@@ -1,32 +1,67 @@
 import React, { useState } from 'react';
 import axios from '../api';
+import Cookies from 'js-cookie';
 
-const WorkoutForm = ({ onSubmit }) => {
-  const [workoutName, setWorkoutName] = useState('');
+const moment = require('moment');
 
-  const handleSubmit = async (e) => {
+const WorkoutForm = ({ workout }) => {
+  const [date, setDate] = useState('');
+  const [weight, setWeight] = useState(0);
+  const [reps, setReps] = useState(0);
+  const userId = Cookies.get('userId');
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post('/api/workouts', { name: workoutName }); // Update this line
-      onSubmit(response.data);
-      setWorkoutName('');
-    } catch (error) {
-      console.error('Error creating workout:', error);
-    }
+    axios
+      .post('/api/recorded-workouts', {
+        user: userId,
+        UUID: "1",
+        date: new moment(date),
+        workout: workout[0]._id,
+        weight: weight,
+        reps: reps
+      })
+      .then((response) => {
+        setDate('');
+        setWeight(0);
+        setReps(0);
+      })
+      .catch((error) => {
+        console.log({
+        user: userId,
+        UUID: "1",
+        date: new moment(date),
+        workout: workout[0]._id,
+        weight: weight,
+        reps: reps
+      });
+        console.error('Error creating workout:', error);
+      });
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Create Workout</h2>
-      <label htmlFor="workout-name">Workout Name:</label>
+      <label htmlFor="workout">Date, Weight, and Reps:</label>
       <input
-        id="workout-name"
         type="text"
-        value={workoutName}
-        onChange={(e) => setWorkoutName(e.target.value)}
+        id="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
       />
-      <button type="submit">Create</button>
+      <input
+        type="number"
+        id="weight"
+        value={weight}
+        onChange={(e) => setWeight(e.target.value)}
+      />
+      <input
+        type="number"
+        id="reps"
+        value={reps}
+        onChange={(e) => setReps(e.target.value)}
+      />
+      <button type="submit">Create Workout</button>
     </form>
   );
 };
