@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { StyledNavbar } from './StyledNavbar';
 
 const Navbar = ({ loggedIn }) => {
   return (
-    <nav>
+    <StyledNavbar>
       {!loggedIn && (
         <>
           <Link to="/login">Login</Link>
@@ -16,7 +17,7 @@ const Navbar = ({ loggedIn }) => {
           <Link to="/profile">Profile</Link>
         </>
       )}
-    </nav>
+    </StyledNavbar>
   );
 };
 

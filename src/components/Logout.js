@@ -1,7 +1,27 @@
 import React from 'react';
 import axios from '../api';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const OutlineButton = styled.button`
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border: 2px solid #333;
+  color: #333;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #333;
+    color: #ffffff;
+  }
+`;
 
 const Logout = (props) => {
   const { updateLoggedIn } = props;
@@ -19,10 +39,10 @@ const Logout = (props) => {
   };
 
   return (
-    <div>
+    <Container>
       <h4>Wanna Logout?</h4>
-      <button onClick={logout}>Logout</button>
-    </div>
+      <OutlineButton onClick={logout}>Logout</OutlineButton>
+    </Container>
   );
 };
 

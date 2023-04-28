@@ -1,5 +1,85 @@
 import React, { useState } from 'react';
 import axios from '../api';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  margin-bottom: 2rem;
+`;
+
+const AddButton = styled.button`
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border: 2px solid #333;
+  color: #333;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #333;
+    color: #ffffff;
+  }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+`;
+
+const ModalTitle = styled.h4`
+  margin-bottom: 1rem;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+const ResultsContainer = styled.div`
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+`;
+
+const AddWorkoutButton = styled.button`
+  margin-left: 1rem;
+  background-color: transparent;
+  border: 2px solid #333;
+  color: #333;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #333;
+    color: #ffffff;
+  }
+`;
 
 function AddPreferredWorkouts({ currentUser }) {
   const [searchInput, setSearchInput] = useState('');
@@ -32,6 +112,7 @@ function AddPreferredWorkouts({ currentUser }) {
       });
       setSelectedWorkouts([...selectedWorkouts, workout]);
       console.log('Workout added to preferred workouts');
+      handleClose();
     } catch (error) {
       console.error('Error adding workout to preferred workouts:', error);
     }
@@ -41,20 +122,16 @@ function AddPreferredWorkouts({ currentUser }) {
   const handleShow = () => setShowModal(true);
 
   return (
-    <div>
-      <button onClick={handleShow}>Add Preferred Workouts</button>
+    <Container>
+      <AddButton onClick={handleShow}>Favorite a Workout</AddButton>
 
       {showModal && (
-        <div className="modal" onClick={handleClose}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h4 className="modal-title">Add Preferred Workouts</h4>
-              <button className="close-button" onClick={handleClose}>
-                &times;
-              </button>
-            </div>
+        <Modal onClick={handleClose}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalTitle>Favorite a Workout</ModalTitle>
+            <CloseButton onClick={handleClose}>&times;</CloseButton>
             <div>
-              <div className="input-group">
+              <InputGroup>
                 <input
                   type="text"
                   placeholder="Search workouts"
@@ -62,31 +139,30 @@ function AddPreferredWorkouts({ currentUser }) {
                   onChange={handleSearchInputChange}
                 />
                 <button onClick={searchWorkouts}>Search</button>
-              </div>
-              <div className="results-container">
+              </InputGroup>
+              <ResultsContainer>
                 <ul>
                   {workoutList.map((workout) => (
                     <li key={workout._id}>
                       {workout.name}
-                      <button
-                        className="add-workout-button"
+                      <AddWorkoutButton
                         onClick={() => onAddPreferredWorkout(workout)}
                       >
                         Add to preferred workouts
-                      </button>
+                      </AddWorkoutButton>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </ResultsContainer>
             </div>
             <div>
               <button onClick={handleClose}>Close</button>
             </div>
-          </div>
-        </div>
+          </ModalContent>
+        </Modal>
       )}
-    </div>
+    </Container>
   );
-}
+};
 
 export default AddPreferredWorkouts;

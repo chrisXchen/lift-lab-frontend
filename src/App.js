@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage'
+import RegisterPage from './pages/RegisterPage';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
@@ -43,7 +43,7 @@ function App() {
       if (userId && username) {
         setCurrentUser({ _id: userId, username });
         setLoggedIn(true);
-        console.log("Found cookie for " + username);
+        console.log('Found cookie for ' + username);
       }
 
       setLoading(false);

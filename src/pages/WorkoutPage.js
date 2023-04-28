@@ -5,6 +5,26 @@ import SingleWorkoutList from '../components/SingleWorkoutList';
 import WorkoutForm from '../components/WorkoutForm';
 import Cookies from 'js-cookie';
 import WorkoutChart from '../components/WorkoutChart';
+import styled from 'styled-components';
+
+const Main = styled.main`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+`;
+
+const WorkoutImage = styled.img`
+  width: 100%;
+  max-width: 500px;
+  object-fit: cover;
+  object-position: center;
+  margin-bottom: 1rem;
+`;
+
+const WorkoutTitle = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+`;
 
 const WorkoutPage = () => {
   const { workoutslug } = useParams();
@@ -28,24 +48,33 @@ const WorkoutPage = () => {
     }
   };
 
+  const hasWorkoutData = () => {
+    for (const date in workoutData) {
+      if (Object.keys(workoutData[date]).length > 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   useEffect(() => {
     fetchData();
   }, [userId, workoutslug]);
 
   return (
-    <main>
+    <Main>
       {!loading && (
         <div>
-          <img src={genWorkoutData[0].gifUrl} alt="workout gif"/>
-          <h2>{genWorkoutData[0].name}</h2>
-          {workoutData && workoutData.length > 0 && (
+          <WorkoutImage src={genWorkoutData[0].gifUrl} alt="workout gif" />
+          <WorkoutTitle>{genWorkoutData[0].name}</WorkoutTitle>
+          {hasWorkoutData() && (
             <WorkoutChart workoutSlug={workoutslug} userId={userId} />
           )}
           <SingleWorkoutList workoutData={workoutData} />
           <WorkoutForm workout={genWorkoutData} onFormSubmit={fetchData} />
         </div>
       )}
-    </main>
+    </Main>
   );
 };
 
