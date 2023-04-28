@@ -70,7 +70,7 @@ const WorkoutPage = () => {
             <WorkoutChart workoutSlug={workoutslug} userId={userId} />
           )}
           <SingleWorkoutList workoutData={workoutData} />
-          <WorkoutForm workout={genWorkoutData} onFormSubmit={fetchData} />
+          <WorkoutForm workout={genWorkoutData} />
         </div>
       )}
     </Main>
