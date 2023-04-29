@@ -9,12 +9,10 @@ import ProfilePage from './pages/ProfilePage';
 import { Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import WorkoutPage from './pages/WorkoutPage';
-//import axios from './api';
 import Cookies from 'js-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  //const [workouts, setWorkouts] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -62,78 +60,30 @@ function App() {
         <main>
           {!loading && (
             <Routes>
-              {/* Main route ("/") */}
               <Route
                 path="/"
-                element={
-                  loggedIn ? (
-                    <Navigate to="/dashboard" /> // Redirect to dashboard if logged in
-                  ) : (
-                    <LandingPage /> // Show landing page if not logged in
-                  )
-                }
+                element={loggedIn ? <Navigate to="/dashboard" /> : <LandingPage />}
               />
-
-              {/* Login route ("/login") */}
               <Route
                 path="/login"
-                element={
-                  loggedIn ? (
-                    <Navigate to="/dashboard" /> // Redirect to dashboard if logged in
-                  ) : (
-                    <LoginPage updateLoggedIn={updateLoggedIn} /> // Show login page if not logged in
-                  )
-                }
+                element={loggedIn ? <Navigate to="/dashboard" /> : <LoginPage updateLoggedIn={updateLoggedIn} />}
               />
-
-              {/* Register route ("/register") */}
               <Route
                 path="/register"
-                element={
-                  loggedIn ? (
-                    <Navigate to="/dashboard" /> // Redirect to dashboard if logged in
-                  ) : (
-                    <RegisterPage /> // Show register page if not logged in
-                  )
-                }
+                element={loggedIn ? <Navigate to="/dashboard" /> : <RegisterPage />}
               />
-
-              {/* Profile route ("/profile") */}
               <Route
                 path="/profile"
-                element={
-                  loggedIn ? (
-                    <ProfilePage updateLoggedIn={updateLoggedIn} currentUser={currentUser} />
-                  ) : (
-                    <Navigate to="/login" />
-                  )
-                }
+                element={loggedIn ? <ProfilePage updateLoggedIn={updateLoggedIn} currentUser={currentUser} /> : <Navigate to="/login" />}
               />
-
-              {/* Dashboard route ("/dashboard") */}
               <Route
                 path="/dashboard"
-                element={
-                  loggedIn ? (
-                    <DashboardPage currentUser={currentUser} /> // Show dashboard page if logged in
-                  ) : (
-                    <Navigate to="/login" /> // Redirect to login page if not logged in
-                  )
-                }
+                element={loggedIn ? <DashboardPage currentUser={currentUser} /> : <Navigate to="/login" />}
               />
-
-              {/* Workout Page Route ("/dashboard/:workoutslug") */}
               <Route
                 path="/dashboard/:workoutslug"
-                element={
-                  loggedIn ? (
-                    <WorkoutPage />
-                  ) : (
-                    <Navigate to="/login" />
-                  )
-                }
+                element={loggedIn ? <WorkoutPage /> : <Navigate to="/login" />}
               />
-
             </Routes>
           )}
         </main>
