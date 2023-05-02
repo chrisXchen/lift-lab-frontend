@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import WorkoutPage from './pages/WorkoutPage';
 import Cookies from 'js-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -53,10 +54,8 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">
-          <h1>Lift Lab</h1>
-          <Navbar loggedIn={loggedIn} />
-        </header>
+        <CssBaseline />
+        <Navbar loggedIn={loggedIn} />
         <main>
           {!loading && (
             <Routes>

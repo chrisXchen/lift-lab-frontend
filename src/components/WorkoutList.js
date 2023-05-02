@@ -1,25 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  margin-bottom: 2rem;
-`;
-
-const Title = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-`;
-
-const DateHeader = styled.h3`
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-`;
-
-const WorkoutHeader = styled.h4`
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-`;
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 
 const WorkoutList = ({ userId }) => {
   const [groupedWorkouts, setGroupedWorkouts] = useState({});
@@ -38,28 +23,35 @@ const WorkoutList = ({ userId }) => {
   }, [userId]);
 
   return (
-    <Container>
-      <Title>Your Recorded Workouts</Title>
+    <Box sx={{ marginBottom: 2 }}>
+      <Typography variant="h4" gutterBottom>
+        Your Recorded Workouts
+      </Typography>
       {Object.keys(groupedWorkouts).map((date) => (
-        <div key={date}>
-          <DateHeader>{new Date(date).toLocaleDateString()}</DateHeader>
+        <Box key={date}>
+          <Typography variant="h5" gutterBottom>
+            {new Date(date).toLocaleDateString()}
+          </Typography>
           {Object.keys(groupedWorkouts[date]).map((workoutName) => (
-            <div key={workoutName}>
-              <WorkoutHeader>{workoutName}</WorkoutHeader>
-              <ul>
+            <Box key={workoutName}>
+              <Typography variant="h6" gutterBottom>
+                {workoutName}
+              </Typography>
+              <List>
                 {groupedWorkouts[date][workoutName].map((workout) => (
-                  <li key={workout._id}>
-                    {workout.weight} lbs x {workout.reps} reps
-                  </li>
+                  <ListItem key={workout._id} disablePadding>
+                    <ListItemText>
+                      {workout.weight} lbs x {workout.reps} reps
+                    </ListItemText>
+                  </ListItem>
                 ))}
-              </ul>
-            </div>
+              </List>
+            </Box>
           ))}
-        </div>
+        </Box>
       ))}
-    </Container>
+    </Box>
   );
 };
-
 
 export default WorkoutList;
