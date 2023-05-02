@@ -12,11 +12,16 @@ import WorkoutPage from './pages/WorkoutPage';
 import Cookies from 'js-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { useMode } from './theme';
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const [theme, colorMode] = useMode();
 
   const updateLoggedIn = (status, user) => {
     setLoggedIn(status);
@@ -52,42 +57,44 @@ function App() {
   }, [userIdCookie, usernameCookie]);
 
   return (
-    <Router>
-      <div className="App">
-        <CssBaseline />
-        <Navbar loggedIn={loggedIn} />
-        <main>
-          {!loading && (
-            <Routes>
-              <Route
-                path="/"
-                element={loggedIn ? <Navigate to="/dashboard" /> : <LandingPage />}
-              />
-              <Route
-                path="/login"
-                element={loggedIn ? <Navigate to="/dashboard" /> : <LoginPage updateLoggedIn={updateLoggedIn} />}
-              />
-              <Route
-                path="/register"
-                element={loggedIn ? <Navigate to="/dashboard" /> : <RegisterPage />}
-              />
-              <Route
-                path="/profile"
-                element={loggedIn ? <ProfilePage updateLoggedIn={updateLoggedIn} currentUser={currentUser} /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/dashboard"
-                element={loggedIn ? <DashboardPage currentUser={currentUser} /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/dashboard/:workoutslug"
-                element={loggedIn ? <WorkoutPage /> : <Navigate to="/login" />}
-              />
-            </Routes>
-          )}
-        </main>
-      </div>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div className="App">
+          <CssBaseline />
+          <Navbar loggedIn={loggedIn} />
+          <main>
+            {!loading && (
+              <Routes>
+                <Route
+                  path="/"
+                  element={loggedIn ? <Navigate to="/dashboard" /> : <LandingPage />}
+                />
+                <Route
+                  path="/login"
+                  element={loggedIn ? <Navigate to="/dashboard" /> : <LoginPage updateLoggedIn={updateLoggedIn} />}
+                />
+                <Route
+                  path="/register"
+                  element={loggedIn ? <Navigate to="/dashboard" /> : <RegisterPage />}
+                />
+                <Route
+                  path="/profile"
+                  element={loggedIn ? <ProfilePage updateLoggedIn={updateLoggedIn} currentUser={currentUser} /> : <Navigate to="/login" />}
+                />
+                <Route
+                  path="/dashboard"
+                  element={loggedIn ? <DashboardPage currentUser={currentUser} /> : <Navigate to="/login" />}
+                />
+                <Route
+                  path="/dashboard/:workoutslug"
+                  element={loggedIn ? <WorkoutPage /> : <Navigate to="/login" />}
+                />
+              </Routes>
+            )}
+          </main>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
